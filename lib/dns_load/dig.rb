@@ -5,13 +5,18 @@ module DnsLoad
 
     include Celluloid
 
-    def cmd( domain )
-      "dig @127.0.0.1 -p 5300 #{domain}"
+    def cmd( domain, address, port )
+      "dig @#{address} -p #{port} #{domain}"
     end
 
-    def execute( num_requests, domains )
+    def execute( options )
       cmds = []
-      num_requests.times { cmds << cmd( domains.sample ) }
+      domains = options[:domains].split( ',' )
+
+      options[:num_requests].times do
+        cmds << cmd( domains.sample, options[:address], options[:port] )
+      end
+
       `#{cmds.join( '; ' )}`
     end
 

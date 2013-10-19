@@ -15,7 +15,9 @@ EOS
   opt :domains, "One or more domains to query for", short: '-d', type: String
   opt :num_requests, "The number of requests to perform per iteration", default: 5000, short: '-r', type: Integer
   opt :num_iterations, "The number of iterations to perform", default: 1, short: '-i', type: Integer
-  opt :pool_size, "The size of the execution pool", default: 2, short: '-p', type: Integer
+  opt :pool_size, "The size of the execution pool", default: 2, type: Integer
+  opt :address, "The address of the DNS server", short: '-a', type: String
+  opt :port, "The port of the DNS server", default: 53, short: '-p', type: Integer
 end
 
 
@@ -30,7 +32,12 @@ pool = DnsLoad::Dig.pool( size: opts[:pool_size] )
 future = nil
 
 opts[:num_iterations].times do
-  future = pool.future.execute( opts[:num_requests], opts[:domains].split( ',' ))
+  #future = pool.future.execute( opts[:num_requests], opts[:domains].split( ',' ))
+  future = pool.future.execute( domains: opts[:domains],
+                                num_requests: opts[:num_requests],
+                                domains: opts[:domains],
+                                address: opts[:address],
+                                port: opts[:port] )
 end
 
 future.value
