@@ -18,4 +18,4 @@ Or install it yourself as:
 
 ## Usage
 
-    $ dns-load -r 5000 -i 1 -d google.com,yahoo.com
+    $ dns-load -r 5000 -i 1 -d google.com,yahoo.com, -a 127.0.0.1 -p 53 --pool-size 4
